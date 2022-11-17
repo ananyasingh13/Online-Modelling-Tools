@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ERD</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jointjs/2.1.0/joint.css" />
+    <link rel="stylesheet" href="erd.css">
+    <style>
+        button{
+            margin: 10px;
+        }
+    </style>
+</head>
+<body style="background-color:  #62b6f2; color:white;">
+
+    <!-- THE UPPER PART OF THE WEB -->
+    <div style="width: 100%; height: 200px; margin: 10px;">
+        <button class="btn btn-primary" onclick="addEntity()"; span style="font-family: Georgia, 'Times New Roman', Times, serif;">Create Entity</button>
+        <input type="text" name="entityName" id="entityName"span style="font-family: Georgia, 'Times New Roman', Times, serif" placeholder="Entity Name">
+        <label for="entityType"span style="font-family: Georgia, 'Times New Roman', Times, serif">Entity Type:</label>
+        <select name="entityType" id="entityType"span style="font-family: Georgia, 'Times New Roman', Times, serif">
+            <option value="strong">strong</option>
+            <option value="weak">weak</option>
+        </select>
+        <span style="color: white; float: right; font-size: 30px; margin-right: 20px; font-family: Georgia, 'Times New Roman', Times, serif;">ER DIAGRAM</span><br>
+        <span style="color: white; float: right; font-size: 10px; margin-right: 20px;font-family: Georgia, 'Times New Roman', Times, serif;"><i>AREA</i></span>
+        <button class="btn btn-danger" onclick="addAttribute()";span style="font-family: Georgia, 'Times New Roman', Times, serif;">Create Attribute</button>
+        <input type="text" name="entityNameForAttribute" id="entityNameForAttribute" span style="font-family: Georgia, 'Times New Roman', Times, serif"placeholder="entity name">
+        <input type="text" name="attributeName" id="attributeName" span style="font-family: Georgia, 'Times New Roman', Times, serif"placeholder="attribute name">
+        <label for="entityType" span style="font-family: Georgia, 'Times New Roman', Times, serif">Attribute Type:</label>
+        <select name="type" id="attributeType" style="text-align:center;"span style="font-family: Georgia, 'Times New Roman', Times, serif;">
+            <option value="key" span style="font-family: Georgia, 'Times New Roman', Times, serif">primary key</option>
+            <option value="single" span style="font-family: Georgia, 'Times New Roman', Times, serif" >single</option>
+            <option value="multi_valued" span style="font-family: Georgia, 'Times New Roman', Times, serif"style="border: 1px solid red;">multi valued</option>
+            <option value="derived" span style="font-family: Georgia, 'Times New Roman', Times, serif" style="border:1px dashed green">derived</option>
+        </select>
+        <button style="float: right;" class="btn btn-info" onclick="location.reload(false)"span style="font-family: Georgia, 'Times New Roman', Times, serif">Clear</button><br>         
+        <button class="btn btn-success" onclick="createRelationship()"span style="font-family: Georgia, 'Times New Roman', Times, serif;">Create Relationship</button>
+        <input type="text" name="entity1Rel" id="entity1Rel" placeholder="Entity 1"span style="font-family: Georgia, 'Times New Roman', Times, serif">
+        <input type="text" name="entity2Rel" id="entity2Rel" placeholder="Entity 2"span style="font-family: Georgia, 'Times New Roman', Times, serif">
+        <label for="reltype" span style="font-family: Georgia, 'Times New Roman', Times, serif">Relation Type:</label>
+        <select name="reltype" id="relType"span style="font-family: Georgia, 'Times New Roman', Times, serif">
+            <option value="isa"span style="font-family: Georgia, 'Times New Roman', Times, serif">isa</option>
+            <option value="custom_rel"span style="font-family: Georgia, 'Times New Roman', Times, serif">custom relation</option>
+        </select>
+        <input type="text" name="relName" id="relName" placeholder="custom relation name"span style="font-family: Georgia, 'Times New Roman', Times, serif">
+        <br>
+        <label for="entity1Val" span style="font-family: Georgia, 'Times New Roman', Times, serif">Entity 1 Quantity:</label>
+        <select name="entity1Val" id="entity1Val"span style="font-family: Georgia, 'Times New Roman', Times, serif">
+            <option value="1">1</option>
+            <option value="N">N</option>
+        </select>
+        <label for="entity2Val"span style="font-family: Georgia, 'Times New Roman', Times, serif">Entity 2 Quantity:</label>
+        <select name="entity2Val" id="entity2Val"span style="font-family: Georgia, 'Times New Roman', Times, serif">
+            <option value="1">1</option>
+            <option value="N">N</option>
+        </select><br> 
+    </div>
+
+    <!-- THE PAGE WHERE ERD MODELS SIT -->
+    <div id="myholder" ></div>
+
+
+    
+
+    <!-- dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/2.1.0/joint.js"></script>
+    <script src="../src/erd.js"></script>
+    <!-- code -->
+
+    <script src="erd.js"></script>
+</body>
+
+</html>
